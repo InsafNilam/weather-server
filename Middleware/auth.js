@@ -10,12 +10,8 @@ const auth = asyncHandler(async (req, res, next) => {
     bearerHeader.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) res.status(403).json({ err: err });
-      req.user = user;
-      return next();
-    });
+    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    return next();
   } else {
     res.status(403).json({ msg: "Token is not Valid" });
   }

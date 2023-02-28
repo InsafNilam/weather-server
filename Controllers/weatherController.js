@@ -30,8 +30,8 @@ const createWeather = asyncHandler(async (req, res) => {
 });
 
 const getWeather = asyncHandler(async (req, res) => {
-	const userId = await req.user.id;
-	Weather.find({ userId: userId }, (err, doc) => {
+  const userId = await req.user.id;
+  Weather.find({ userId: userId }, (err, doc) => {
     if (!err) res.send(doc);
     else
       console.log(
