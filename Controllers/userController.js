@@ -10,16 +10,14 @@ const createUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400);
-    throw new Error("please fill all required fields");
+    res.status(400).json("please fill all required fields");
   }
 
   // Check if user alredy exists with provided email
   const userExists = await User.findOne({ email });
 
   if (userExists) {
-    res.status(400);
-    throw new Error("This email address is already being used");
+    res.status(400).json("This email address is already being used");
   }
 
   // Hash password
@@ -33,11 +31,9 @@ const createUser = asyncHandler(async (req, res) => {
   });
 
   if (user) {
-    res.status(201);
-    res.json("User added to the system successfully !");
+    res.status(201).json("User added to the system successfully !");
   } else {
-    res.status(400);
-    throw new Error("Invalid user! please check again");
+    res.status(400).json("Invalid user! please check again");
   }
 });
 
@@ -50,12 +46,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
   if (user && (await bcrypt.compare(password, user.password))) {
     res.json({
-      email: user.email,
       token: generateToken(user._id),
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid credentials");
+    res.status(400).json("Invalid credentials");
   }
 });
 
